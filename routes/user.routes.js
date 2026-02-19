@@ -2,6 +2,7 @@ import express from "express";
 import {
   createUserController,
   myProfileController,
+  loginUserController,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -12,5 +13,6 @@ const router = express.Router();
  */
 router.get("/myprofile", myProfileController);
 router.post("/create", createUserController);
+router.post("/login", loginUserController);
 
 export default router;
