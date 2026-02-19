@@ -6,7 +6,14 @@ import jwt from "jsonwebtoken";
  * GET /api/auth/myprofile
  * - to get current user profile
  */
-export const myProfileController = async (req, res) => {};
+export const myProfileController = async (req, res) => {
+  return res.status(200).json({
+    success: true,
+    message: "user data fetched",
+    user: req.user,
+  });
+};
+
 /**
  * POST /api/auth/create
  * - to create new user profile

@@ -4,6 +4,7 @@ import {
   myProfileController,
   loginUserController,
 } from "../controllers/user.controller.js";
+import { isAuth } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ const router = express.Router();
 /**
  * GET /api/auth/myprofile
  */
-router.get("/myprofile", myProfileController);
+router.get("/myprofile", isAuth, myProfileController);
 router.post("/create", createUserController);
 router.post("/login", loginUserController);
 
