@@ -3,6 +3,7 @@ import {
   createUserController,
   myProfileController,
   loginUserController,
+  updateUserController,
 } from "../controllers/user.controller.js";
 import { isAuth } from "../middlewares/auth.middleware.js";
 
@@ -15,5 +16,6 @@ const router = express.Router();
 router.get("/myprofile", isAuth, myProfileController);
 router.post("/create", createUserController);
 router.post("/login", loginUserController);
+router.put("/update", isAuth, updateUserController);
 
 export default router;

@@ -114,3 +114,42 @@ export const loginUserController = async (req, res) => {
     });
   }
 };
+
+/**
+ * PUT /api/auth/update-profile
+ * - update user password
+ */
+
+export const updateUserController = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    // validation
+    if (!oldPassword || !newPassword) {
+      return res.status(401).json({
+        success: false,
+        message: "All fields are requried",
+      });
+    }
+    // find user details
+    const user = await userModel.findById(req.user._id).select("password");
+    // compare old pass
+    const isMatchPass = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatchPass) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid password",
+      });
+    }
+    // again hash new pass
+    const hashedPass = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPass;
+    await user.save();
+    return res.status(200).json({
+      success: true,
+      message: "Updated profile",
+      user,
+    });
+  } catch (error) {
+    console.log("error updating user profile", error);
+  }
+};
