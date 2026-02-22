@@ -1,5 +1,8 @@
 import express from "express";
-import { createProduct } from "../controllers/product.controller.js";
+import {
+  createProduct,
+  updateProduct,
+} from "../controllers/product.controller.js";
 
 const router = express.Router();
 // api
@@ -7,5 +10,6 @@ const router = express.Router();
  * create product
  */
 router.post("/create", createProduct);
+router.put("/:id", updateProduct);
 
 export default router;
