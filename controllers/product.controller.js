@@ -100,3 +100,27 @@ export const getAllProducts = async (req, res) => {
     });
   }
 };
+
+/**
+ * DELETE /api/product/:id
+ * - delete product by id
+ */
+export const deleteProduct = async (req, res) => {
+  try {
+    // find project by id then remove or destroy images then remove product from db
+    const product = await productModel.findById(req.params.id);
+    // use for loop with find index and public_id then destroy images
+    // destroy images from cloudinary
+    await product.deleteOne();
+    res.status(200).json({
+      success: true,
+      message: "Product deleted successfully",
+    });
+  } catch (error) {
+    console.log("error in deleting product", error);
+    req.status(401).json({
+      success: false,
+      message: "Error deleting product",
+    });
+  }
+};
