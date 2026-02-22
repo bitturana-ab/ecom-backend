@@ -17,6 +17,7 @@ app.use(morgan());
 
 // routes import
 import userRoutes from "./routes/user.routes.js";
+import productRoutes from "./routes/product.routes.js";
 // api routes
 app.get("/", (req, res) => {
   res.status(200).json({
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
   });
 });
 app.use("/api/auth", userRoutes);
+app.use("/api/product", productRoutes);
 
 // listen / start server
 app.listen(PORT, () => {
