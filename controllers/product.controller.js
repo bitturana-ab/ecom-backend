@@ -78,3 +78,25 @@ export const updateProduct = async (req, res) => {
     });
   }
 };
+
+/**
+ * GET /api/product/all
+ * - get all products
+ */
+
+export const getAllProducts = async (req, res) => {
+  try {
+    const products = await productModel.find();
+    res.status(200).json({
+      success: true,
+      message: "All products fetched successfully",
+      products,
+    });
+  } catch (error) {
+    console.log("error fetching all products", error);
+    res.status(401).json({
+      success: false,
+      message: "Error in get all product",
+    });
+  }
+};
