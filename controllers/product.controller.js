@@ -109,6 +109,12 @@ export const deleteProduct = async (req, res) => {
   try {
     // find project by id then remove or destroy images then remove product from db
     const product = await productModel.findById(req.params.id);
+    if (!product) {
+      res.status(401).json({
+        success: false,
+        message: "Invalid Id",
+      });
+    }
     // use for loop with find index and public_id then destroy images
     // destroy images from cloudinary
     await product.deleteOne();
@@ -117,8 +123,15 @@ export const deleteProduct = async (req, res) => {
       message: "Product deleted successfully",
     });
   } catch (error) {
+    // handle invalid id error
+    if (error.name == "CastError") {
+      res.status(401).json({
+        success: false,
+        message: "Invalid id",
+      });
+    }
     console.log("error in deleting product", error);
-    req.status(401).json({
+    res.status(401).json({
       success: false,
       message: "Error deleting product",
     });
