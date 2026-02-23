@@ -1,4 +1,5 @@
 import { productModel } from "../models/product.model.js";
+import uploadToCloudinary from "../utils/cloudinary.js";
 
 /**
  * POST /api/product/create
@@ -134,6 +135,39 @@ export const deleteProduct = async (req, res) => {
     res.status(401).json({
       success: false,
       message: "Error deleting product",
+    });
+  }
+};
+
+/**
+ * POST /api/product/image:id
+ * - upload images of product
+ */
+
+export const uploadProductImage = async (req, res) => {
+  try {
+    // const product = await productModel.findById(req.params.id);
+    // update product images
+    if (!req.file) {
+      return res.status(401).json({
+        success: false,
+        message: "Images are required",
+      });
+    }
+    // use upload to cloudinary function
+    const result = await uploadToCloudinary(req.file);
+
+    // access result object
+    res.status(200).json({
+      success: true,
+      message: "Product images uploaded",
+      result,
+    });
+  } catch (error) {
+    console.log("error in upload product image api", error);
+    res.status(401).json({
+      success: false,
+      message: "Error uploading product image api",
     });
   }
 };
