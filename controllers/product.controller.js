@@ -1,5 +1,6 @@
 import { productModel } from "../models/product.model.js";
 import uploadToCloudinary from "../utils/cloudinary.js";
+import cloudinary from "cloudinary";
 
 /**
  * POST /api/product/create
@@ -118,6 +119,9 @@ export const deleteProduct = async (req, res) => {
     }
     // use for loop with find index and public_id then destroy images
     // destroy images from cloudinary
+    for (let i = 0; i < product.images.length; i++) {
+      await cloudinary.v2.uploader.destroy(product.images[i].public_id);
+    }
     await product.deleteOne();
     res.status(200).json({
       success: true,
@@ -178,7 +182,6 @@ export const uploadProductImage = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Product images uploaded",
-      result,
     });
   } catch (error) {
     console.log("error in upload product image api", error);
