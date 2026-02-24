@@ -169,7 +169,10 @@ export const uploadProductImage = async (req, res) => {
       public_id: result.public_id,
       uri: result.secure_url,
     };
-    product.images = [image];
+    // for more images use product.images.push(image) in diff route
+    // product.images = [image];
+
+    product.images.push(image);
     await product.save();
 
     res.status(200).json({
