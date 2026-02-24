@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const categorySchema = new mongoose.Schema({
   category: {
-    type: Strign,
+    type: String,
     required: [true, "Please provide category"],
   },
 });

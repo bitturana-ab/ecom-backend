@@ -140,13 +140,20 @@ export const deleteProduct = async (req, res) => {
 };
 
 /**
- * POST /api/product/image:id
+ * POST /api/product/image/:id
  * - upload images of product
  */
 
 export const uploadProductImage = async (req, res) => {
   try {
-    // const product = await productModel.findById(req.params.id);
+    const product = await productModel.findById(req.params.id);
+    // validation
+    if (!product) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid product id",
+      });
+    }
     // update product images
     if (!req.file) {
       return res.status(401).json({
@@ -157,7 +164,14 @@ export const uploadProductImage = async (req, res) => {
     // use upload to cloudinary function
     const result = await uploadToCloudinary(req.file);
 
-    // access result object
+    // access result object and update image to product
+    const image = {
+      public_id: result.public_id,
+      uri: result.secure_url,
+    };
+    product.images = [image];
+    await product.save();
+
     res.status(200).json({
       success: true,
       message: "Product images uploaded",
